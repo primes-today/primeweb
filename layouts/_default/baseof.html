@@ -1,0 +1,33 @@
+<html>  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>{{ block "title" . }}
+    {{ .Site.Title }}
+  {{ end }}</title>
+  {{ $css := resources.Get "css/index.css" }}
+  {{ $style := $css | resources.PostCSS }}
+
+  <link rel="stylesheet" type="text/css" href="{{ $style.Permalink }}" />
+
+  </head>
+  <body>
+    <div class="bg-slate-50">
+      <div class="max-w-lg mx-auto flex justify-center">
+        <div class="p-6">Hello World!!</div></div>
+    </div>
+    <!-- Code that all your templates share, like a header -->
+  
+
+    {{ block "main" . }}
+      <!-- The part of the page that begins to differ between templates -->
+    {{ end }}
+    {{ block "footer" . }}
+    <!-- More shared code, perhaps a footer but that can be overridden if need be in  -->
+    {{ end }}
+
+
+
+
+  </body>
+</html>
