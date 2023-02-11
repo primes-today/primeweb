@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"os"
 	"strconv"
@@ -49,9 +50,14 @@ func (f fileInterface) Post(ctx context.Context, status uint64) error {
 type templateWriter struct {
 	template       string
 	outputTemplate string
+	now            time.Time
 }
 
-func (t templateWriter) Post(ctx context.Context, status uint64) error {
+func (t *templateWriter) SetNow(now time.Time) {
+	t.now = now
+}
+
+func (t *templateWriter) Post(ctx context.Context, status uint64) error {
 	tpl, err := template.ParseFiles(t.template)
 	if err != nil {
 		return err
@@ -70,8 +76,12 @@ func (t templateWriter) Post(ctx context.Context, status uint64) error {
 		Formatted string
 	}
 
+	if t.now.IsZero() {
+		t.SetNow(time.Now())
+	}
+
 	tpl.Execute(out, templateData{
-		time.Now().UTC().Format(time.RFC3339),
+		t.now.UTC().Format(time.RFC3339),
 		status,
 		p.Sprintf("%d", status),
 	})
@@ -94,28 +104,87 @@ func (m multiPoster) Post(ctx context.Context, status uint64) error {
 	return nil
 }
 
-func main() {
+func backfill() {
+	start_d, err := time.Parse(time.RFC3339, flag.Arg(1))
+	if err != nil {
+		panic(err)
+	}
+	end_d, err := time.Parse(time.RFC3339, flag.Arg(2))
+	if err != nil {
+		panic(err)
+	}
+	max, err := strconv.ParseUint(flag.Arg(3), 10, 64)
+	if err != nil {
+		panic(err)
+	}
+
 	f := fileInterface{path: "_current"}
 	status, err := f.Fetch(context.Background())
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to read existing status from file: %s", err)
-		os.Exit(1)
+		panic(err)
+	}
+
+	tpl := templateWriter{template: "archetypes/prime.md", outputTemplate: "content/prime/%d.md"}
+	p := multiPoster{posters: []primebot.Poster{
+		fileInterface{path: "_current"},
+		&tpl,
+	}}
+
+	g := primebot.NewProbablyPrimeGenerator(status.LastStatus + 1)
+	span := end_d.Sub(start_d)
+	statuses := []uint64{}
+
+	for {
+		status, err := g.Generate(context.Background())
+		if err != nil {
+			panic(err)
+		}
+
+		if status >= max {
+			fmt.Fprintf(os.Stderr, "status %d larger than max %d, breaking", status, max)
+			break
+		}
+
+		statuses = append(statuses, status)
+		g.SetStart(status + 1)
+	}
+
+	fmt.Fprint(os.Stderr, statuses)
+	sep := int(span.Seconds()) / len(statuses)
+
+	for i, status := range statuses {
+		tpl.SetNow(start_d.Add(time.Second * time.Duration(i*sep)))
+		p.Post(context.Background(), status)
+	}
+}
+
+func main() {
+	flag.Parse()
+
+	if flag.Arg(0) == "backfill" {
+		backfill()
+		return
+	}
+
+	f := fileInterface{path: "_current"}
+	status, err := f.Fetch(context.Background())
+	if err != nil {
+		panic(err)
 	}
 
 	p := multiPoster{posters: []primebot.Poster{
 		fileInterface{path: "_current"},
-		templateWriter{template: "archetypes/prime.md", outputTemplate: "content/prime/%d.md"},
+		&templateWriter{template: "archetypes/prime.md", outputTemplate: "content/prime/%d.md"},
 	}}
 
 	g := primebot.NewProbablyPrimeGenerator(status.LastStatus + 1)
 	next, err := g.Generate(context.Background())
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to generate next prime: %s", err)
-		os.Exit(1)
+		panic(err)
 	}
 
 	err = p.Post(context.Background(), next)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to write post template: %s", err)
+		panic(err)
 	}
 }
