@@ -5,4 +5,10 @@ module.exports = {
     extend: {},
   },
   plugins: [],
-};
+  // TODO: remove this after dev
+  safelist: [
+    {
+      pattern: /.*/,
+    },
+  ],
+}

@@ -1,0 +1,16 @@
+{{ define "main" }}
+  <article>
+    <div>
+      {{ .Content }}
+    </div>
+  </article>
+  <div>    
+    <section>
+      {{ range  .Pages }}
+        <div>
+          {{ partial "summary.html" . }}
+        </div>
+      {{ end }}
+    </section>
+  </div>
+{{ end }}

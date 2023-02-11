@@ -1,33 +1,38 @@
-<html>  
+<!DOCTYPE html>
+<html lang="en-US">  
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>{{ block "title" . }}
-    {{ .Site.Title }}
-  {{ end }}</title>
+  <title>
+    {{ block "title" . }}
+      {{ .Site.Title }}
+    {{ end }}
+  </title>
+
   {{ $css := resources.Get "css/index.css" }}
   {{ $style := $css | resources.PostCSS }}
 
-  <link rel="stylesheet" type="text/css" href="{{ $style.Permalink }}" />
+  {{ if .Site.IsServer }}
+  <link rel="stylesheet" href="{{ $style.RelPermalink }}">
+  {{ else }}
+  {{ $style := $style | minify | fingerprint | resources.PostProcess }}
+  <link rel="stylesheet" href="{{ $style.Permalink }}" integrity="{{ $style.Data.Integrity }}">
+  {{ end }}
 
   </head>
-  <body>
-    <div class="bg-slate-50">
-      <div class="max-w-lg mx-auto flex justify-center">
-        <div class="p-6">Hello World!!</div></div>
-    </div>
-    <!-- Code that all your templates share, like a header -->
+  <body class="text-black bg-white dark:bg-slate-800 dark:text-slate-50">
+    <header class="p-6 space-x-4">
+      <a class="flex items-center" href="/">
+        <img class="rounded-full h-8 w-8" src="/img/logo.png" alt="primes logo">
+        <h1 class="pl-2 text-3xl font-bold">primes</h1>
+      </a>
+    </header>
   
-
+    <main>
     {{ block "main" . }}
       <!-- The part of the page that begins to differ between templates -->
     {{ end }}
-    {{ block "footer" . }}
-    <!-- More shared code, perhaps a footer but that can be overridden if need be in  -->
-    {{ end }}
-
-
-
+    </main>
 
   </body>
 </html>

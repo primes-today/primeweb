@@ -1,0 +1,17 @@
+{{ define "title" }}
+{{ .Site.Title }} :: {{ .Title }}
+{{ end }}
+{{ define "main" }}
+  <div>
+    <article>
+      <header>
+        <p>
+          {{ humanize .Section }}
+        </p>
+        <h1>
+          {{ .Title }}
+        </h1>
+      </header>
+    </article>
+  </div>
+{{ end }}

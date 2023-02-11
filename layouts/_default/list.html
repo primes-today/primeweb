@@ -1,0 +1,14 @@
+{{ define "main" }}
+  <article>
+    <section>
+      {{- .Content -}}
+    </section>
+    <section>
+      {{ range (.Paginate  .Pages.ByTitle).Pages }}
+        <div>
+          {{- partial "summary.html" . -}}
+        </div>
+      {{ end }}
+    </section>
+  </article>
+{{ end }}

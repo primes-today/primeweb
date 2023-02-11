@@ -1,7 +1,7 @@
 ---
-title: "{{ .Name }}"
+title: "{{ .Formatted }}"
 date: {{ .Date }}
-prime_integer: {{ .Name }}
+integer: {{ .Integer }}
 ---
 
-{{ .Name }}
+{{ .Formatted }}
