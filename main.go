@@ -149,11 +149,10 @@ func backfill() {
 		g.SetStart(status + 1)
 	}
 
-	fmt.Fprint(os.Stderr, statuses)
 	sep := int(span.Seconds()) / len(statuses)
 
 	for i, status := range statuses {
-		tpl.SetNow(start_d.Add(time.Second * time.Duration(i*sep)))
+		tpl.SetNow(start_d.Add(time.Second * time.Duration(sep*(i+1))))
 		p.Post(context.Background(), status)
 	}
 }
