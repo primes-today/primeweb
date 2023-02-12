@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -132,7 +133,7 @@ func backfill() {
 
 	g := primebot.NewProbablyPrimeGenerator(status.LastStatus + 1)
 	span := end_d.Sub(start_d)
-	statuses := []uint64{}
+	var statuses []uint64
 
 	for {
 		status, err := g.Generate(context.Background())
@@ -157,11 +158,55 @@ func backfill() {
 	}
 }
 
+func importFile() {
+	type Tweet struct {
+		CreatedAt string `json:"created_at"`
+		FullText  string `json:"full_text"`
+	}
+
+	type Record struct {
+		Tweet Tweet `json:"tweet"`
+	}
+
+	raw, err := os.ReadFile(flag.Arg(1))
+	if err != nil {
+		panic(err)
+	}
+
+	var records []Record
+	err = json.Unmarshal(raw, &records)
+	if err != nil {
+		panic(err)
+	}
+
+	tpl := templateWriter{template: "archetypes/prime.md", outputTemplate: "content/prime/%d.md"}
+	p := multiPoster{posters: []primebot.Poster{
+		fileInterface{path: "_current"},
+		&tpl,
+	}}
+
+	for _, record := range records {
+		status, err := strconv.ParseUint(record.Tweet.FullText, 10, 64)
+		if err != nil {
+			panic(err)
+		}
+		t, err := time.Parse(time.RubyDate, record.Tweet.CreatedAt)
+		if err != nil {
+			panic(err)
+		}
+		tpl.SetNow(t)
+		p.Post(context.Background(), status)
+	}
+}
+
 func main() {
 	flag.Parse()
 
 	if flag.Arg(0) == "backfill" {
 		backfill()
+		return
+	} else if flag.Arg(0) == "import_file" {
+		importFile()
 		return
 	}
 
