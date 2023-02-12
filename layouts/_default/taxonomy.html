@@ -6,10 +6,8 @@
   </article>
   <div>    
     <section>
-      {{ range  .Pages }}
-        <div>
-          {{ partial "summary.html" . }}
-        </div>
+      {{ range  .Pages.ByDate }}
+        {{ partial "summary.html" . }}
       {{ end }}
     </section>
   </div>

@@ -1,5 +1,18 @@
 {{ define "main" }}
+  {{ $latest_primes := first 100 (where .Site.RegularPages "Type" "primes") }}
   <section>
-    {{ .Content }}
+    <article>
+      {{ $last := index $latest_primes 0 }}
+      {{ partial "prime-hero.html" $last }}
+    </article>
+    <article>
+      <h1>Recent Primes</h1>
+      {{ range after 1 $latest_primes }}
+        {{ partial "prime-link.html" . }}
+      {{ end }}
+    </article>
+    <article>
+      {{ .Content }}
+    </article>
   </section>
 {{ end }}
