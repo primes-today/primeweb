@@ -6,7 +6,7 @@
   </article>
   <div>    
     <section>
-      {{ range  .Pages.ByDate }}
+      {{ range .Pages.ByDate }}
         {{ partial "summary.html" . }}
       {{ end }}
     </section>

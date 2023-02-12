@@ -7,9 +7,11 @@
     </article>
     <article>
       <h1>Recent Primes</h1>
+      <ul>
       {{ range after 1 $latest_primes }}
-        {{ partial "prime-link.html" . }}
+        <li>{{ partial "prime-link.html" . }}</li>
       {{ end }}
+      </ul>
     </article>
     <article>
       {{ .Content }}

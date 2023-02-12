@@ -1,14 +1,16 @@
 {{ define "main" }}
+  {{ $paginator := (.Paginate .Pages.ByDate.Reverse) }}
   <article>
     <section>
       {{- .Content -}}
     </section>
     <section>
-      {{ range (.Paginate  .Pages.ByTitle).Pages }}
-        <div>
-          {{- partial "summary.html" . -}}
-        </div>
+      {{ range $paginator.Pages }}
+      <div>
+        {{- partial "summary.html" . -}}
+      </div>
       {{ end }}
     </section>
   </article>
+  {{ partial "pagination" . }}
 {{ end }}

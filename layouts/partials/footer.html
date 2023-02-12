@@ -1,30 +1,30 @@
+<div>
   <div>
-    <div>
-      &copy; 2013&ndash;{{ now.Format "2006"}} {{ with .Site.Copyright | default .Site.Title }} {{ . | safeHTML }} {{ end }}
-      —
-      {{ with .Site.Params.contentLicense }}
-      Content: <a href="{{ .url }}" target="_blank">{{ .text }}</a>,
-      {{ end }}
-      {{ with .Site.Params.codeLicense }}
-      Code: <a href="{{ .url }}" target="_blank">{{ .text }}</a>, unless otherwise noted.
-      {{ end }}
+    &copy; 2013&ndash;{{ now.Format "2006"}} {{ with .Site.Copyright | default .Site.Title }} {{ . | safeHTML }} {{ end }}
+    —
+    {{ with .Site.Params.contentLicense }}
+    Content: <a href="{{ .url }}" target="_blank">{{ .text }}</a>,
+    {{ end }}
+    {{ with .Site.Params.codeLicense }}
+    Code: <a href="{{ .url }}" target="_blank">{{ .text }}</a>, unless otherwise noted.
+    {{ end }}
 
-      <p>
-        View the
-        {{ with .Site.Params.repository }}
-        <a href="{{ .url }}" target="_blank">source</a>
-        {{ end }}
-        for this site.
-      </p>
-    </div>
-    <div>
-      <ul>
-        <li>
-          <a href="{{ref . "privacy"}}">Privacy</a>
-        </li>
-        <li>
-          <a href="{{ref . "about"}}">About</a>
-        </li>
-      </ul>
-    </div>
+    <p>
+      View the
+      {{ with .Site.Params.repository }}
+      <a href="{{ .url }}" target="_blank">source</a>
+      {{ end }}
+      for this site.
+    </p>
   </div>
+  <div>
+    <ul>
+      <li>
+        <a href="{{ref . "privacy"}}">Privacy</a>
+      </li>
+      <li>
+        <a href="{{ref . "about"}}">About</a>
+      </li>
+    </ul>
+  </div>
+</div>
