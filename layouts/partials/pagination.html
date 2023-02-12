@@ -38,18 +38,6 @@
   {{- with .Paginator }}
     {{- $currentPageNumber := .PageNumber }}
 
-    {{- with .First }}
-      {{- if ne $currentPageNumber .PageNumber }}
-      <li class="page-item">
-        <a href="{{ .URL }}" aria-label="First" class="page-link" role="button"><span aria-hidden="true">&laquo;&laquo;</span></a>
-      </li>
-      {{- else }}
-      <li class="page-item disabled">
-        <a aria-disabled="true" aria-label="First" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;&laquo;</span></a>
-      </li>
-      {{- end }}
-    {{- end }}
-
     {{- with .Prev }}
       <li class="page-item">
         <a href="{{ .URL }}" aria-label="Previous" class="page-link" role="button"><span aria-hidden="true">&laquo;</span></a>
@@ -67,12 +55,14 @@
       {{- $start = math.Max 1 (add (sub $end $slots) 1) }}
     {{- end }}
 
-    {{ if ne $start 1}}
+    {{- with .First }}
+      {{- if ne (string $start) (string .PageNumber) }}
       <li class="page-item">
-        <a href="{{ (index $.Paginator.Pagers 1).URL }}" aria-label="Page 1" class="page-link" role="button">1</a>
+        <a href="{{ .URL }}" aria-label="First" class="page-link" role="button"><span aria-hidden="true">1</span></a>
       </li>
       <li>&hellip;</li>
-    {{ end }}
+      {{- end }}
+    {{- end }}
 
     {{- range $k := seq $start $end }}
       {{- if eq $.Paginator.PageNumber $k }}
@@ -86,12 +76,14 @@
       {{- end }}
     {{- end }}
 
-    {{ if ne $end .TotalPages}}
+    {{- with .Last }}
+      {{- if ne (string $end) (string .PageNumber) }}
       <li>&hellip;</li>
       <li class="page-item">
-        <a href="{{ (index $.Paginator.Pagers .TotalPages).URL }}" aria-label="Page {{ .TotalPages }}" class="page-link" role="button">{{ .TotalPages }}</a>
+        <a href="{{ .URL }}" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">{{ .PageNumber }}</span></a>
       </li>
-    {{ end }}
+      {{- end }}
+    {{- end }}
 
     {{- with .Next }}
       <li class="page-item">
@@ -101,18 +93,6 @@
       <li class="page-item disabled">
         <a aria-disabled="true" aria-label="Next" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&raquo;</span></a>
       </li>
-    {{- end }}
-
-    {{- with .Last }}
-      {{- if ne $currentPageNumber .PageNumber }}
-      <li class="page-item">
-        <a href="{{ .URL }}" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
-      </li>
-      {{- else }}
-      <li class="page-item disabled">
-        <a aria-disabled="true" aria-label="Last" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&raquo;&raquo;</span></a>
-      </li>
-      {{- end }}
     {{- end }}
 
   {{- end }}
