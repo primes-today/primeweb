@@ -3,6 +3,7 @@ name: primebot
 on:
   schedule:
     - cron:  '0 * * * *'
+  workflow_dispatch:
 
 jobs:
   generate:
@@ -10,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.DEPLOY_KEY }}
+          token: ${{ secrets.PAT }}
 
       - name: Set up Go
         uses: actions/setup-go@v3
