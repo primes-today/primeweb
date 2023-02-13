@@ -1,0 +1,24 @@
+name: primebot
+
+on:
+  schedule:
+    - cron:  '0 * * * *'
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.DEPLOY_KEY }}
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: '1.20'
+
+      - name: Next Prime
+        run: go run main.go
+
+      - name: Commit
+        uses: stefanzweifel/git-auto-commit-action@v4

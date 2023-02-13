@@ -1,0 +1,30 @@
+<div class="flex justify-between items-center">
+  <aside class="text-sm">
+    &copy; 2013&ndash;{{ now.Format "2006"}} {{ with .Site.Copyright | default .Site.Title }} {{ . | safeHTML }} {{ end }}
+    —
+    {{ with .Site.Params.contentLicense }}
+    Content: <a class="underline" href="{{ .url }}" target="_blank">{{ .text }}</a>,
+    {{ end }}
+    {{ with .Site.Params.codeLicense }}
+    Code: <a class="underline" href="{{ .url }}" target="_blank">{{ .text }}</a>, unless otherwise noted.
+    {{ end }}
+
+    <p>
+      View the
+      {{ with .Site.Params.repository }}
+      <a class="underline" href="{{ .url }}" target="_blank">source</a>
+      {{ end }}
+      for this site.
+    </p>
+  </aside>
+  <nav>
+    <ul class="flex space-x-4 font-bold">
+      <li>
+        <a href="{{ref . "about"}}" role="button">About</a>
+      </li>
+      <li>
+        <a href="{{ref . "privacy"}}" role="button">Privacy</a>
+      </li>
+    </ul>
+  </nav>
+</div>

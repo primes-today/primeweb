@@ -1,0 +1,19 @@
+baseURL: https://primes.today/
+languageCode: 'en-us'
+title: primes
+copyright: Nathan Wittstock
+
+rssLimit: 100
+paginate: 100
+enableRobotsTXT: true
+
+params:
+  repository:
+    text: github.com/fardog/primeweb
+    url: https://github.com/fardog/primeweb
+  contentLicense:
+    text: CC BY 4.0
+    url: https://creativecommons.org/licenses/by/4.0/
+  codeLicense:
+    text: MIT
+    url: https://github.com/fardog/primeweb/blob/main/LICENSE

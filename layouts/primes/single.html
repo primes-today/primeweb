@@ -1,0 +1,18 @@
+{{ define "title" }}
+{{ .Site.Title }} :: {{ .Title }}
+{{ end }}
+{{ define "main" }}
+  <article>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="{{ref . .Section}}" title="list of all primes"></a></li>
+        </ul>
+      </nav>
+      <h1>
+        {{ .Title }}
+      </h1>
+      {{ partial "datetime.html" . }}
+    </header>
+  </article>
+{{ end }}

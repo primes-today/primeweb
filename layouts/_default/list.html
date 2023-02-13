@@ -1,0 +1,16 @@
+{{ define "main" }}
+  {{ $paginator := (.Paginate .Pages.ByDate) }}
+  <article>
+    <section>
+      {{- .Content -}}
+    </section>
+    <section>
+      {{ range $paginator.Pages }}
+      <div>
+        {{- partial "summary.html" . -}}
+      </div>
+      {{ end }}
+    </section>
+  </article>
+  {{ partial "pagination" . }}
+{{ end }}
