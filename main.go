@@ -125,7 +125,7 @@ func backfill() {
 		panic(err)
 	}
 
-	tpl := templateWriter{template: "archetypes/prime.md", outputTemplate: "content/prime/%d.md"}
+	tpl := templateWriter{template: "archetypes/prime.md", outputTemplate: "content/primes/%d.md"}
 	p := multiPoster{posters: []primebot.Poster{
 		fileInterface{path: "_current"},
 		&tpl,
@@ -152,6 +152,7 @@ func backfill() {
 
 	sep := int(span.Seconds()) / len(statuses)
 
+	fmt.Fprint(os.Stderr, statuses)
 	for i, status := range statuses {
 		tpl.SetNow(start_d.Add(time.Second * time.Duration(sep*(i+1))))
 		p.Post(context.Background(), status)
@@ -179,7 +180,7 @@ func importFile() {
 		panic(err)
 	}
 
-	tpl := templateWriter{template: "archetypes/prime.md", outputTemplate: "content/prime/%d.md"}
+	tpl := templateWriter{template: "archetypes/prime.md", outputTemplate: "content/primes/%d.md"}
 	p := multiPoster{posters: []primebot.Poster{
 		fileInterface{path: "_current"},
 		&tpl,
@@ -218,7 +219,7 @@ func main() {
 
 	p := multiPoster{posters: []primebot.Poster{
 		fileInterface{path: "_current"},
-		&templateWriter{template: "archetypes/prime.md", outputTemplate: "content/prime/%d.md"},
+		&templateWriter{template: "archetypes/prime.md", outputTemplate: "content/primes/%d.md"},
 	}}
 
 	g := primebot.NewProbablyPrimeGenerator(status.LastStatus + 1)
