@@ -3,6 +3,7 @@ languageCode: 'en-us'
 title: primes
 copyright: Nathan Wittstock
 
+rssLimit: 100
 paginate: 100
 enableRobotsTXT: true
 

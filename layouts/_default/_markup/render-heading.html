@@ -1,0 +1,11 @@
+{{- $class := "text-xl" }}
+{{- if eq .Level 2}}
+{{- $class = "text-l" }}
+{{- else if eq .Level 3}}
+{{- $class = "text-m" }}
+{{- else if eq .Level 4}}
+{{- $class = "text-base" }}
+{{- else if eq .Level 5}}
+{{- $class = "text-sm" }}
+{{- end }}
+<h{{ .Level }} class="{{ . $class }} font-bold" id="{{ .Anchor | safeURL }}">{{ .Text | safeHTML }}</h{{ .Level }}>

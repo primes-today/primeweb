@@ -2,8 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap');
+@layer components {
+  .prime-list li:after {
+    content: ", ";
+  }
 
-* {
-  font-family: 'Roboto', sans-serif;
+  .prime-list li:last-child:after {
+    content: "";
+  }
+
+  .page-single p {
+    @apply mb-2;
+    @apply leading-relaxed;
+  }
 }

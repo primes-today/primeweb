@@ -2,19 +2,17 @@
   {{ $latest_primes := first 100 (where .Site.RegularPages "Type" "primes") }}
   <section>
     <article>
-      {{ $last := index $latest_primes 0 }}
-      {{ partial "prime-hero.html" $last }}
+      {{- $last := index $latest_primes 0 -}}
+      {{- partial "prime-hero.html" $last -}}
     </article>
-    <article>
-      <h1>Recent Primes</h1>
-      <ul>
-      {{ range after 1 $latest_primes }}
-        <li>{{ partial "prime-link.html" . }}</li>
-      {{ end }}
+    <article class="pl-2 pr-2 pt-8 md:pt-16 md:pl-16 md:pr-16 lg:pl-24 lg:pr-24">
+      <h1 class="text-2xl font-bold">Recent Primes</h1>
+      <ul class="prime-list">
+        {{- range after 1 $latest_primes }}
+        <li class="inline">{{- chomp (partial "prime-link.html" .) -}}</li>
+        {{- end }}
+        <li class="inline"><a href="{{ ref . "primes"}}">&hellip;</a></li>
       </ul>
-    </article>
-    <article>
-      {{ .Content }}
     </article>
   </section>
 {{ end }}

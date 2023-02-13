@@ -1,13 +1,33 @@
 <!DOCTYPE html>
-<html lang="en-US">  
+<html lang="{{ .Site.LanguageCode }}">  
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}{{ end }}">
+
+  <link href="/index.xml" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}">
+  <link href="/index.xml" rel="feed" type="application/rss+xml" title="{{ .Site.Title }}">
+  <link rel="shortcut icon" type="image/png" href="/img/logo.png">
 
   <title>
     {{ block "title" . }}
       {{ .Site.Title }}
     {{ end }}
   </title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap" rel="stylesheet">
+
+  {{ if .OutputFormats.Get "RSS" }}
+  {{ with .OutputFormats.Get "RSS" }}
+    <link href="{{ .RelPermalink }}" rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" />
+    <link href="{{ .RelPermalink }}" rel="feed" type="application/rss+xml" title="{{ $.Site.Title }}" />
+    {{ end }}
+  {{ end }}
+
+  {{- template "_internal/opengraph.html" . -}}
+  {{- template "_internal/schema.html" . -}}
+  {{- template "_internal/twitter_cards.html" . -}}
 
   {{ $css := resources.Get "css/index.css" }}
   {{ $style := $css | resources.PostCSS }}
@@ -20,8 +40,8 @@
   {{ end }}
 
   </head>
-  <body class="text-black bg-white dark:bg-slate-800 dark:text-slate-50">
-    <header class="p-6 space-x-4">
+  <body class="text-black bg-white dark:bg-slate-800 dark:text-slate-50 m-8">
+    <header class="mb-8">
       <a class="flex items-center" href="/">
         <img class="rounded-full h-8 w-8" src="/img/logo.png" alt="primes logo">
         <h1 class="pl-2 text-3xl font-bold">primes</h1>
@@ -34,7 +54,7 @@
     {{ end }}
     </main>
 
-    <footer>
+    <footer class="pt-8 md:pt-16">
       {{ partial "footer.html" . }}
     </footer>
   </body>

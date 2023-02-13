@@ -1,8 +1,9 @@
-<article>
-  <header>
-    <h1>
-      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-    </h1>
-    {{ partial "datetime.html" . }}
-  </header>
-</article>
+<header class="p-6 bg-slate-100 dark:bg-slate-700 max-w-sm mx-auto rounded-xl shadow-lg items-center">
+  <h1 class="font-bold">Latest Prime</h1>
+  <p class="text-6xl">
+    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+  </p>
+  <aside class="items-end">
+    Posted: {{ partial "datetime.html" . }}
+  </aside>
+</header>
