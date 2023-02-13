@@ -16,12 +16,17 @@ jobs:
         with:
           submodules: true
           fetch-depth: 0
-
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
           hugo-version: "0.110.0"
           extended: true
+
+      - name: Node modules
+        run: npm ci
 
       - name: Build
         run: hugo --gc --minify
