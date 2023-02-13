@@ -8,11 +8,6 @@ paginate: 100
 enableRobotsTXT: true
 
 params:
-  mainSections:
-    - brands
-
-  referrer: false
-
   repository:
     text: github.com/fardog/primeweb
     url: https://github.com/fardog/primeweb
