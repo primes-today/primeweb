@@ -1,18 +1,15 @@
 {{ define "title" }}
-{{ .Site.Title }} :: {{ .Title }}
+{{ .Site.Title }} | {{ .Title }}
 {{ end }}
 {{ define "main" }}
   <article>
     <header>
+      {{ partial "prime-single.html" . }}
       <nav>
         <ul>
-          <li><a href="{{ref . .Section}}" title="list of all primes"></a></li>
+          <li><a href="{{ ref . "primes" }}">&laquo; Listing</a></li>
         </ul>
       </nav>
-      <h1>
-        {{ .Title }}
-      </h1>
-      {{ partial "datetime.html" . }}
     </header>
   </article>
 {{ end }}
