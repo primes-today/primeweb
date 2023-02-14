@@ -1,16 +1,26 @@
 {{ define "main" }}
   {{ $paginator := (.Paginate .Pages.ByDate) }}
-  <article>
+  <article class="pt-8">
+    <header class="mb-4 pl-0 md:pl-14 lg:pl-22">
+      <nav>
+        {{ partial "pagination" . }}
+      </nav>
+    </header>
+    <section class="pl-2 pr-2 md:pl-16 md:pr-16 lg:pl-24 lg:pr-24">
+      <ul class="prime-list">
+        {{- with $paginator.Prev }}
+        <li class="inline page-link"><a href="{{ .URL }}" aria-label="Previous" role="button"><span aria-hidden="true">&hellip;</span></a></li>
+        {{- end}}
+        {{ range $paginator.Pages }}
+        <li class="inline">{{- chomp (partial "prime-link.html" .) -}}</li>
+        {{ end }}
+        {{- with $paginator.Next }}
+        <li class="inline page-link"><a href="{{ .URL }}" aria-label="Next" role="button"><span aria-hidden="true">&hellip;</span></a></li>
+        {{- end}}
+      </ul>
+    </section>
     <section>
       {{- .Content -}}
     </section>
-    <section>
-      {{ range $paginator.Pages }}
-      <div>
-        {{- partial "summary.html" . -}}
-      </div>
-      {{ end }}
-    </section>
   </article>
-  {{ partial "pagination" . }}
-{{ end }}
+  {{ end }}

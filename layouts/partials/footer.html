@@ -1,4 +1,4 @@
-<div class="flex justify-between items-center">
+<div class="grid grid-cols-1 md:grid-cols-2 justify-between items-center">
   <aside class="text-sm">
     &copy; 2013&ndash;{{ now.Format "2006"}} {{ with .Site.Copyright | default .Site.Title }} {{ . | safeHTML }} {{ end }}
     —
@@ -17,8 +17,11 @@
       for this site.
     </p>
   </aside>
-  <nav>
-    <ul class="flex space-x-4 font-bold">
+  <nav class="flex justify-start md:justify-end">
+    <ul class="flex gap-4 font-bold">
+      <li>
+        <a href="/" role="button">Home</a>
+      </li>
       <li>
         <a href="{{ref . "about"}}" role="button">About</a>
       </li>
