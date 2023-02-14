@@ -4,12 +4,12 @@
 {{ define "main" }}
   <article>
     <header>
-      {{ partial "prime-single.html" . }}
       <nav>
         <ul>
           <li><a href="{{ ref . "primes" }}">&laquo; Listing</a></li>
         </ul>
       </nav>
+      {{ partial "prime-single.html" . }}
     </header>
   </article>
 {{ end }}
