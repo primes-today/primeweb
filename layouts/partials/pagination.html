@@ -1,6 +1,6 @@
 {{- if gt .Paginator.TotalPages 1 }}
   {{- with .Paginator }}
-  <ul class="flex items-center space-x-2">
+  <ul class="flex items-center gap-2">
     {{- with .Prev }}
     <li>
       <a href="{{ .URL }}" aria-label="Previous" role="button"><span aria-hidden="true">&laquo;</span></a>
