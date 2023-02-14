@@ -38,3 +38,4 @@ jobs:
           deploy_key: ${{ secrets.DEPLOY_KEY }}
           publish_dir: ./public
           publish_branch: gh-pages
+          force_orphan: true
