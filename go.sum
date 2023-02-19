@@ -5,8 +5,6 @@ github.com/dghubble/go-twitter v0.0.0-20221104224141-912508c3888b h1:XQu6o3AwJx/
 github.com/dghubble/go-twitter v0.0.0-20221104224141-912508c3888b/go.mod h1:B0/qdW5XUupJvcsx40hnVbfjzz9He5YpYXx6eVVdiSY=
 github.com/dghubble/sling v1.4.1 h1:AxjTubpVyozMvbBCtXcsWEyGGgUZutC5YGrfxPNVOcQ=
 github.com/dghubble/sling v1.4.1/go.mod h1:QoMB1KL3GAo+7HsD8Itd6S+6tW91who8BGZzuLvpOyc=
-github.com/fardog/primebot v0.0.0-20180202053858-78dd2aa650fb h1:lk/WtZavzM6eMvxNEn+HtRkdqtDL/aTSZYFhqCsZ5xs=
-github.com/fardog/primebot v0.0.0-20180202053858-78dd2aa650fb/go.mod h1:14l2N3ov4sxcsfLcSJRGTHY/yWIFjM2OUxBzFJgF7Kg=
 github.com/fardog/primebot v0.0.0-20230206051320-79222f68116f h1:NWuIH3MHRNhyn0uYqWOCSwDIbyljjTFadFjlp84O1Qs=
 github.com/fardog/primebot v0.0.0-20230206051320-79222f68116f/go.mod h1:x2FAgiWF8oe5ZN6TbFMkqCtCkhH6IOLaA9ve+cAOMyw=
 github.com/google/go-cmp v0.5.2 h1:X2ev0eStA3AbceY54o37/0PQ/UWqKEiiO2dKL5OPaFM=
