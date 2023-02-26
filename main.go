@@ -112,6 +112,13 @@ func validate() {
 		panic(err)
 	}
 
+	files, err := os.ReadDir("content/primes")
+	if err != nil {
+		panic(err)
+	}
+
+	expected := len(files)
+
 	checked := 0
 	g := primebot.NewProbablyPrimeGenerator(2)
 	for {
@@ -121,6 +128,10 @@ func validate() {
 		}
 
 		if status > max.LastStatus {
+			if expected != checked {
+				panic(fmt.Sprintf("expected %d files, but checked %d", expected, checked))
+			}
+
 			fmt.Fprintf(os.Stdout, "reached end status %d, checked %d files\n", max.LastStatus, checked)
 			break
 		}
