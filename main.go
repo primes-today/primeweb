@@ -105,6 +105,47 @@ func (m multiPoster) Post(ctx context.Context, status uint64) error {
 	return nil
 }
 
+func validate() {
+	f := fileInterface{path: "_current"}
+	max, err := f.Fetch(context.Background())
+	if err != nil {
+		panic(err)
+	}
+
+	files, err := os.ReadDir("content/primes")
+	if err != nil {
+		panic(err)
+	}
+
+	expected := len(files)
+
+	checked := 0
+	g := primebot.NewProbablyPrimeGenerator(2)
+	for {
+		status, err := g.Generate(context.Background())
+		if err != nil {
+			panic(err)
+		}
+
+		if status > max.LastStatus {
+			if expected != checked {
+				panic(fmt.Sprintf("expected %d files, but checked %d", expected, checked))
+			}
+
+			fmt.Fprintf(os.Stdout, "reached end status %d, checked %d files\n", max.LastStatus, checked)
+			break
+		}
+
+		_, err = os.ReadFile(fmt.Sprintf("content/primes/%d.md", status))
+		if err != nil {
+			panic(err)
+		}
+
+		checked = checked + 1
+		g.SetStart(status + 1)
+	}
+}
+
 func backfill() {
 	start_d, err := time.Parse(time.RFC3339, flag.Arg(1))
 	if err != nil {
@@ -208,6 +249,9 @@ func main() {
 		return
 	} else if flag.Arg(0) == "import_file" {
 		importFile()
+		return
+	} else if flag.Arg(0) == "validate" {
+		validate()
 		return
 	}
 
