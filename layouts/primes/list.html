@@ -7,7 +7,7 @@
         {{ partial "pagination" . }}
       </nav>
     </header>
-    <section class="pl-2 pr-2 md:pl-16 md:pr-16 lg:pl-24 lg:pr-24 text-xl">
+    <section class="pl-2 pr-2 md:pl-16 md:pr-16 lg:pl-24 lg:pr-24 text-xl leading-relaxed">
       <ul class="prime-list">
         {{- with $paginator.Prev }}
         <li class="inline page-link"><a href="{{ .URL }}" aria-label="Previous" role="button"><span aria-hidden="true">&hellip;</span></a></li>
