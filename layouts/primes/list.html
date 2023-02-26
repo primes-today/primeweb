@@ -1,5 +1,5 @@
 {{ define "main" }}
-  {{ $paginator := (.Paginate .Pages.ByDate) }}
+  {{ $paginator := (.Paginate .Pages.ByDate.Reverse) }}
 
   <article class="pt-8">
     <header class="mb-4 pl-0 md:pl-14 lg:pl-22">
