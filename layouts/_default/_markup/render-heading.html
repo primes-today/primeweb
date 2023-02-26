@@ -1,11 +1,16 @@
-{{- $class := "text-xl" }}
+{{- $class := "text-2xl" }}
+{{- $margin := "mt-8" }}
 {{- if eq .Level 2}}
-{{- $class = "text-l" }}
+{{- $class = "text-xl" }}
+{{- $margin := "mt-6" }}
 {{- else if eq .Level 3}}
-{{- $class = "text-m" }}
+{{- $class = "text-lg" }}
+{{- $margin := "mt-4" }}
 {{- else if eq .Level 4}}
 {{- $class = "text-base" }}
+{{- $margin := "mt-2.5" }}
 {{- else if eq .Level 5}}
 {{- $class = "text-sm" }}
+{{- $margin := "mt-2" }}
 {{- end }}
-<h{{ .Level }} class="{{ . $class }} font-bold" id="{{ .Anchor | safeURL }}">{{ .Text | safeHTML }}</h{{ .Level }}>
+<h{{ .Level }} class="{{ $class }} {{ $margin }} font-bold" id="{{ .Anchor | safeURL }}">{{ .Text | safeHTML }}</h{{ .Level }}>

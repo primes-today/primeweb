@@ -7,7 +7,7 @@
     </article>
     <article class="pl-2 pr-2 pt-8 md:pt-16 md:pl-16 md:pr-16 lg:pl-24 lg:pr-24">
       <h1 class="text-2xl font-bold">Recent Primes</h1>
-      <ul class="prime-list">
+      <ul class="prime-list text-xl">
         {{- range after 1 $latest_primes }}
         <li class="inline">{{- partial "prime-link.html" . -}}</li>
         {{- end }}
