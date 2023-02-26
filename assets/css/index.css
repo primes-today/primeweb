@@ -3,12 +3,8 @@
 @tailwind utilities;
 
 @layer components {
-  .prime-list li:after {
+  .prime-list li:not(:last-child):after {
     content: ", ";
-  }
-
-  .prime-list li:last-child:after {
-    content: "";
   }
 
   .page-single p {

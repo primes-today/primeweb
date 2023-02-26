@@ -9,9 +9,9 @@
       <h1 class="text-2xl font-bold">Recent Primes</h1>
       <ul class="prime-list">
         {{- range after 1 $latest_primes }}
-        <li class="inline">{{- chomp (partial "prime-link.html" .) -}}</li>
+        <li class="inline">{{- partial "prime-link.html" . -}}</li>
         {{- end }}
-        <li class="inline"><a href="{{ ref . "primes"}}">&hellip;</a></li>
+        <li class="inline"><a href="/primes/page/2">&hellip;</a></li>
       </ul>
     </article>
   </section>

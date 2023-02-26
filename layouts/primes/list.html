@@ -1,5 +1,6 @@
 {{ define "main" }}
-  {{ $paginator := (.Paginate .Pages.ByDate) }}
+  {{ $paginator := (.Paginate .Pages.ByDate.Reverse) }}
+
   <article class="pt-8">
     <header class="mb-4 pl-0 md:pl-14 lg:pl-22">
       <nav>
@@ -12,7 +13,7 @@
         <li class="inline page-link"><a href="{{ .URL }}" aria-label="Previous" role="button"><span aria-hidden="true">&hellip;</span></a></li>
         {{- end}}
         {{ range $paginator.Pages }}
-        <li class="inline">{{- chomp (partial "prime-link.html" .) -}}</li>
+        <li class="inline">{{- partial "prime-link.html" . -}}</li>
         {{ end }}
         {{- with $paginator.Next }}
         <li class="inline page-link"><a href="{{ .URL }}" aria-label="Next" role="button"><span aria-hidden="true">&hellip;</span></a></li>
@@ -23,4 +24,4 @@
       {{- .Content -}}
     </section>
   </article>
-  {{ end }}
+{{ end }}
