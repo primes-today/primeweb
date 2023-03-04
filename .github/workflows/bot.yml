@@ -4,6 +4,7 @@ on:
   schedule:
     - cron:  '55 * * * *'
   workflow_dispatch:
+  pull_request:
 
 jobs:
   generate:
@@ -26,4 +27,5 @@ jobs:
         run: bot 
 
       - name: Commit
+        if: ${{ github.ref == 'refs/heads/main' }}
         uses: stefanzweifel/git-auto-commit-action@v4

@@ -274,6 +274,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	fmt.Printf("posted latest prime %s", next)
 }
 
 func reverse(s string) (result string) {
