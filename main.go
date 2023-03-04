@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"math/big"
 	"os"
-	"strconv"
 	"text/template"
 	"time"
 
@@ -25,9 +25,9 @@ func (f fileInterface) Fetch(ctx context.Context) (*primebot.Status, error) {
 		return &primebot.Status{}, err
 	}
 
-	status, err := strconv.ParseUint(string(raw), 10, 64)
-	if err != nil {
-		return &primebot.Status{}, err
+	status, success := (&big.Int{}).SetString(string(raw), 10)
+	if !success {
+		return &primebot.Status{}, fmt.Errorf("failed to convert string to big.Int: %s", raw)
 	}
 
 	return &primebot.Status{
@@ -36,14 +36,14 @@ func (f fileInterface) Fetch(ctx context.Context) (*primebot.Status, error) {
 	}, nil
 }
 
-func (f fileInterface) Post(ctx context.Context, status uint64) error {
+func (f fileInterface) Post(ctx context.Context, status *big.Int) error {
 	fs, err := os.OpenFile(f.path, os.O_RDWR|os.O_CREATE, 0755)
 	if err != nil {
 		return err
 	}
 	defer fs.Close()
 
-	fmt.Fprintf(fs, "%d", status)
+	fs.WriteString(status.Text(10))
 
 	return nil
 }
@@ -58,7 +58,7 @@ func (t *templateWriter) SetNow(now time.Time) {
 	t.now = now
 }
 
-func (t *templateWriter) Post(ctx context.Context, status uint64) error {
+func (t *templateWriter) Post(ctx context.Context, status *big.Int) error {
 	tpl, err := template.ParseFiles(t.template)
 	if err != nil {
 		return err
@@ -73,7 +73,7 @@ func (t *templateWriter) Post(ctx context.Context, status uint64) error {
 
 	type templateData struct {
 		Date      string
-		Integer   uint64
+		Integer   string
 		Formatted string
 	}
 
@@ -83,7 +83,7 @@ func (t *templateWriter) Post(ctx context.Context, status uint64) error {
 
 	tpl.Execute(out, templateData{
 		t.now.UTC().Format(time.RFC3339),
-		status,
+		status.Text(10),
 		p.Sprintf("%d", status),
 	})
 
@@ -94,7 +94,7 @@ type multiPoster struct {
 	posters []primebot.Poster
 }
 
-func (m multiPoster) Post(ctx context.Context, status uint64) error {
+func (m multiPoster) Post(ctx context.Context, status *big.Int) error {
 	for _, p := range m.posters {
 		err := p.Post(ctx, status)
 		if err != nil {
@@ -120,14 +120,14 @@ func validate() {
 	expected := len(files)
 
 	checked := 0
-	g := primebot.NewProbablyPrimeGenerator(2)
+	g := primebot.NewProbablyPrimeGenerator(big.NewInt(0))
 	for {
 		status, err := g.Generate(context.Background())
 		if err != nil {
 			panic(err)
 		}
 
-		if status > max.LastStatus {
+		if status.Cmp(max.LastStatus) > 0 {
 			if expected != checked {
 				panic(fmt.Sprintf("expected %d files, but checked %d", expected, checked))
 			}
@@ -142,7 +142,7 @@ func validate() {
 		}
 
 		checked = checked + 1
-		g.SetStart(status + 1)
+		g.SetStart(status)
 	}
 }
 
@@ -155,9 +155,9 @@ func backfill() {
 	if err != nil {
 		panic(err)
 	}
-	max, err := strconv.ParseUint(flag.Arg(3), 10, 64)
-	if err != nil {
-		panic(err)
+	max, success := (&big.Int{}).SetString(flag.Arg(3), 10)
+	if !success {
+		panic(fmt.Errorf("unable to parse big.Int from arg: %s", flag.Arg(3)))
 	}
 
 	f := fileInterface{path: "_current"}
@@ -172,9 +172,9 @@ func backfill() {
 		&tpl,
 	}}
 
-	g := primebot.NewProbablyPrimeGenerator(status.LastStatus + 1)
+	g := primebot.NewProbablyPrimeGenerator(status.LastStatus)
 	span := end_d.Sub(start_d)
-	var statuses []uint64
+	var statuses []*big.Int
 
 	for {
 		status, err := g.Generate(context.Background())
@@ -182,13 +182,13 @@ func backfill() {
 			panic(err)
 		}
 
-		if status >= max {
+		if status.Cmp(max) >= 0 {
 			fmt.Fprintf(os.Stderr, "status %d larger than max %d, breaking", status, max)
 			break
 		}
 
 		statuses = append(statuses, status)
-		g.SetStart(status + 1)
+		g.SetStart(status)
 	}
 
 	sep := int(span.Seconds()) / len(statuses)
@@ -228,9 +228,9 @@ func importFile() {
 	}}
 
 	for _, record := range records {
-		status, err := strconv.ParseUint(record.Tweet.FullText, 10, 64)
-		if err != nil {
-			panic(err)
+		status, success := (&big.Int{}).SetString(record.Tweet.FullText, 10)
+		if !success {
+			panic(fmt.Errorf("unable to parse big.Int from tweet record: %s", record.Tweet.FullText))
 		}
 		t, err := time.Parse(time.RubyDate, record.Tweet.CreatedAt)
 		if err != nil {
@@ -266,7 +266,7 @@ func main() {
 		&templateWriter{template: "archetypes/prime.md", outputTemplate: "content/primes/%d.md"},
 	}}
 
-	g := primebot.NewProbablyPrimeGenerator(status.LastStatus + 1)
+	g := primebot.NewProbablyPrimeGenerator(status.LastStatus)
 	next, err := g.Generate(context.Background())
 	if err != nil {
 		panic(err)

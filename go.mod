@@ -3,7 +3,7 @@ module github.com/fardog/primeweb
 go 1.20
 
 require (
-	github.com/fardog/primebot v0.0.0-20230206051320-79222f68116f
+	github.com/fardog/primebot v0.0.0-20230302055454-02e5473e2fe2
 	golang.org/x/text v0.6.0
 )
 
