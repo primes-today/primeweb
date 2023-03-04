@@ -120,11 +120,15 @@ func validate() {
 	expected := len(files)
 
 	checked := 0
-	g := primebot.NewProbablyPrimeGenerator(big.NewInt(0))
+	g := primebot.NewCompositeGenerator(big.NewInt(0))
 	for {
 		status, err := g.Generate(context.Background())
 		if err != nil {
 			panic(err)
+		}
+
+		if checked%1000 == 0 {
+			fmt.Fprintf(os.Stderr, "checking status %d, %s\n", checked, status)
 		}
 
 		if status.Cmp(max.LastStatus) > 0 {
@@ -142,7 +146,6 @@ func validate() {
 		}
 
 		checked = checked + 1
-		g.SetStart(status)
 	}
 }
 
@@ -172,7 +175,7 @@ func backfill() {
 		&tpl,
 	}}
 
-	g := primebot.NewProbablyPrimeGenerator(status.LastStatus)
+	g := primebot.NewCompositeGenerator(status.LastStatus)
 	span := end_d.Sub(start_d)
 	var statuses []*big.Int
 
@@ -188,7 +191,6 @@ func backfill() {
 		}
 
 		statuses = append(statuses, status)
-		g.SetStart(status)
 	}
 
 	sep := int(span.Seconds()) / len(statuses)
@@ -266,7 +268,7 @@ func main() {
 		&templateWriter{template: "archetypes/prime.md", outputTemplate: "content/primes/%d.md"},
 	}}
 
-	g := primebot.NewProbablyPrimeGenerator(status.LastStatus)
+	g := primebot.NewCompositeGenerator(status.LastStatus)
 	next, err := g.Generate(context.Background())
 	if err != nil {
 		panic(err)
