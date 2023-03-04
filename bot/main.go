@@ -11,8 +11,6 @@ import (
 	"time"
 
 	"github.com/fardog/primebot"
-	"golang.org/x/text/language"
-	"golang.org/x/text/message"
 )
 
 type fileInterface struct {
@@ -69,8 +67,6 @@ func (t *templateWriter) Post(ctx context.Context, status *big.Int) error {
 	}
 	defer out.Close()
 
-	p := message.NewPrinter(language.English)
-
 	type templateData struct {
 		Date      string
 		Integer   string
@@ -84,7 +80,7 @@ func (t *templateWriter) Post(ctx context.Context, status *big.Int) error {
 	tpl.Execute(out, templateData{
 		t.now.UTC().Format(time.RFC3339),
 		status.Text(10),
-		p.Sprintf("%d", status),
+		format(status),
 	})
 
 	return nil
@@ -278,4 +274,25 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func reverse(s string) (result string) {
+	for _, r := range s {
+		result = string(r) + result
+	}
+	return
+}
+
+func format(i *big.Int) string {
+	var f string
+	s := reverse(i.Text(10))
+	for i, r := range s {
+		if i != 0 && i%3 == 0 {
+			f = f + "," + string(r)
+			continue
+		}
+		f = f + string(r)
+	}
+
+	return reverse(f)
 }
