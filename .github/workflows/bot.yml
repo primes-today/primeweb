@@ -29,3 +29,5 @@ jobs:
       - name: Commit
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_author: primenumberbot <bot@primes.today>
