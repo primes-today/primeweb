@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fardog/primeweb.git"
+    "url": "git+https://github.com/primes-today/primeweb.git"
   },
   "author": "Nathan Wittstock <nate@fardog.io>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fardog/primeweb/issues"
+    "url": "https://github.com/primes-today/primeweb/issues"
   },
-  "homepage": "https://github.com/fardog/primeweb#readme",
+  "homepage": "https://github.com/primes-today/primeweb#readme",
   "devDependencies": {
     "autoprefixer": "10.4.13",
     "hugo-extended": "0.110.0",
