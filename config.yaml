@@ -9,11 +9,11 @@ enableRobotsTXT: true
 
 params:
   repository:
-    text: github.com/fardog/primeweb
-    url: https://github.com/fardog/primeweb
+    text: github.com/primes-today/primeweb
+    url: https://github.com/primes-today/primeweb
   contentLicense:
     text: CC BY 4.0
     url: https://creativecommons.org/licenses/by/4.0/
   codeLicense:
     text: MIT
-    url: https://github.com/fardog/primeweb/blob/main/LICENSE
+    url: https://github.com/primes-today/primeweb/blob/main/LICENSE

@@ -1,4 +1,4 @@
-module github.com/fardog/primeweb/bot
+module github.com/primes-today/primeweb/bot
 
 go 1.20
 
