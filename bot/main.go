@@ -10,7 +10,7 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/fardog/primebot"
+	"github.com/primes-today/primebot"
 )
 
 type fileInterface struct {

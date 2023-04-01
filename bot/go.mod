@@ -2,7 +2,7 @@ module github.com/fardog/primeweb/bot
 
 go 1.20
 
-require github.com/fardog/primebot v0.0.0-20230302055454-02e5473e2fe2
+require github.com/primes-today/primebot v1.0.0-beta.1
 
 require (
 	github.com/cenkalti/backoff/v4 v4.2.0 // indirect

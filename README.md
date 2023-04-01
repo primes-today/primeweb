@@ -20,7 +20,7 @@ shut down. There's a few components:
 State is written to the [`_current`](./_current) file, and is used to determine
 the last prime number that was generated.
 
-[primebot]: https://github.com/fardog/primebot
+[primebot]: https://github.com/primes-today/primebot
 
 ## License
 
