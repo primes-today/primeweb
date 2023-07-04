@@ -9,7 +9,7 @@ A prime number bot, but as a [website][].
 This was hacked together somewhat quickly as the Twitter bot looks imminent to
 shut down. There's a few components:
 
-- [`main.go`](./main.go): a small script which repurposes parts of [primebot][]
+- [`main.go`](./bot/main.go): a small script which repurposes parts of [primebot][]
   to generate the prime numbers, as well as backfill and import features
 - [Hugo](https://gohugo.io): used to build the primes static site
 - [`bot.yml`](./.github/workflows/bot.yml): a workflow which builds on an hourly
